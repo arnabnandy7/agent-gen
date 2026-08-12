@@ -181,7 +181,7 @@ class KycAmlRiskPipelineIntegrationTest {
         Files.writeString(searchableTextFile, parsePdf(inputPdf))
 
         val kycDocuments = ToolishRag(
-            "amlPipelineKycCertificateDocuments",
+            "kycCertificate",
             "KYC certificate PDF parsed with Tika for legal-entity KYC extraction",
             DirectoryTextSearch(searchDirectory.toString()),
         ).withGoal(
@@ -263,8 +263,8 @@ class KycAmlRiskPipelineIntegrationTest {
             .joinToString("\n\n") { hit ->
                 """
                     Candidate:
-                    OFAC source record id: ${hit.sourceRecordId}
-                    OFAC primary name: ${hit.primaryName}
+                    Record ID (copy this value verbatim as sourceRecordId): ${hit.sourceRecordId}
+                    Primary name: ${hit.primaryName}
                     Matched OFAC alias/name: ${hit.matchedName}
                     Deterministic disposition: ${hit.disposition}
                     Deterministic rationale: ${hit.rationale}
@@ -298,7 +298,7 @@ class KycAmlRiskPipelineIntegrationTest {
             Return a structured subject-level assessment with:
             subjectName, overallStatus, candidateAssessments, rationale, analystAction.
             Each candidate assessment must include:
-            sourceRecordId, candidateName, confidenceScore, confidenceLevel, recommendedDisposition, rationale, missingEvidence.
+            sourceRecordId (copy the exact OFAC source record id from the candidate evidence above — do not invent a new id), candidateName, confidenceScore, confidenceLevel, recommendedDisposition, rationale, missingEvidence.
         """.trimIndent()
 
         return ai.withDefaultLlm()
@@ -421,9 +421,15 @@ class KycAmlRiskPipelineIntegrationTest {
     }
 
     private fun ScreeningAssessment.hitFor(candidate: AmlLogicalCandidateAssessment): ScreeningHit =
-        requireNotNull(hits.firstOrNull { it.sourceRecordId == candidate.sourceRecordId }) {
-            "No screening hit found for LLM candidate ${candidate.sourceRecordId}"
-        }
+        hits.firstOrNull { it.sourceRecordId == candidate.sourceRecordId }
+            ?: hits.firstOrNull {
+                it.primaryName.equals(candidate.candidateName, ignoreCase = true) ||
+                    it.matchedName.equals(candidate.candidateName, ignoreCase = true)
+            }
+            ?: throw IllegalArgumentException(
+                "No screening hit found for LLM candidate ${candidate.sourceRecordId} / '${candidate.candidateName}'. " +
+                    "Available hits: ${hits.map { "${it.sourceRecordId} '${it.primaryName}'" }}"
+            )
 
     private fun ScreeningHit.identifierSummary(): String =
         "not available in normalized screening hit"

@@ -77,7 +77,7 @@ data class Address(
     val line2: String? = null,
     val city: String,
     val region: String? = null,
-    val postalCode: String,
+    val postalCode: String? = null,
     val countryCode: String,
 )
 

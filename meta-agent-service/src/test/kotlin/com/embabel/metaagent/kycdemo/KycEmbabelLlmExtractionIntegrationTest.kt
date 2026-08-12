@@ -108,9 +108,11 @@ class KycEmbabelLlmExtractionIntegrationTest {
         assertTrue(parsedDocuments.all { it.leaves().any() })
 
         val kycDocuments = ToolishRag(
-            "kycDocuments",
-            "KYC package documents for extraction into the KYC ontology",
-            DirectoryTextSearch(documentPackageDir.toString()),
+            name = "kycDocuments",
+            description = "KYC package documents for extraction into the KYC ontology",
+            searchOperations = DirectoryTextSearch(documentPackageDir.toString()),
+            childToolUsageNotes = "When calling textSearch, omit the threshold parameter — " +
+                "BM25 scores are corpus-relative and a fixed threshold silently discards results.",
         ).withGoal(
             """
             Find identity, address, incorporation, registration, directorship, signatory, ownership,
