@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.embabel.metaagent</groupId>
         <artifactId>meta-agent</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>meta-agent-core</artifactId>
@@ -39,6 +39,12 @@
         <dependency>
             <groupId>com.embabel.agent</groupId>
             <artifactId>embabel-agent-starter-openai</artifactId>
+        </dependency>
+
+        <!-- Jackson 3 databind (direct dependency — used in ApiParameterDiscoveryService) -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <!-- Validator API Spec -->

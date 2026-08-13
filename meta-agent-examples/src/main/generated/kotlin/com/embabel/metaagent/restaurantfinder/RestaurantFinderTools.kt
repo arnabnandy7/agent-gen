@@ -7,7 +7,7 @@ import com.embabel.agent.api.annotation.LlmTool
 import com.embabel.metaagent.search.BraveWebSearchService
 import com.embabel.metaagent.search.WebSearchRequest
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import org.jsoup.Jsoup
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value

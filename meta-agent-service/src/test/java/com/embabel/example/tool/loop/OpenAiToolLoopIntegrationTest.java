@@ -10,7 +10,7 @@ import com.embabel.agent.spi.loop.ToolInjectionStrategy;
 import com.embabel.agent.spi.loop.support.DefaultToolLoop;
 import com.embabel.chat.SystemMessage;
 import com.embabel.chat.UserMessage;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import org.jetbrains.annotations.NotNull;

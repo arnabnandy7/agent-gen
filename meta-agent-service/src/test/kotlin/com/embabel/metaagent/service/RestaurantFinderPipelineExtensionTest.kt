@@ -22,7 +22,7 @@ import com.embabel.metaagent.search.WebSearchRequest
 import com.fasterxml.jackson.annotation.JsonClassDescription
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonPropertyDescription
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
@@ -40,7 +40,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.client.RestTemplate
 import org.jsoup.Jsoup
 import java.net.URLEncoder
-import com.fasterxml.jackson.module.kotlin.readValue
+import tools.jackson.module.kotlin.readValue
 
 /**
  * Pipeline Extension Test for Restaurant Finder
@@ -56,10 +56,6 @@ open class RestaurantFinderPipelineExtensionTest {
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
-
-    private val prettyPrinter: ObjectMapper by lazy {
-        objectMapper.copy().enable(com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT)
-    }
 
     @Value("\${FOURSQUARE_API_KEY:}")
     lateinit var foursquareApiKey: String
@@ -185,7 +181,7 @@ open class RestaurantFinderPipelineExtensionTest {
     private fun prettyPrintJson(rawJson: String): String {
         return try {
             val jsonNode = objectMapper.readTree(rawJson)
-            prettyPrinter.writeValueAsString(jsonNode)
+            objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode)
         } catch (e: Exception) {
             rawJson // fallback to raw if parsing fails
         }

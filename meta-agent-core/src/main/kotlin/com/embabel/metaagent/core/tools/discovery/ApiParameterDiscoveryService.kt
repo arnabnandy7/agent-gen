@@ -22,6 +22,8 @@ import com.embabel.metaagent.core.model.DiscoveredTool
 import com.embabel.metaagent.core.model.ParameterLocation
 import com.fasterxml.jackson.annotation.JsonClassDescription
 import com.fasterxml.jackson.annotation.JsonPropertyDescription
+import tools.jackson.core.exc.StreamReadException
+import tools.jackson.databind.exc.MismatchedInputException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.util.regex.Pattern
@@ -164,11 +166,11 @@ class ApiParameterDiscoveryService {
                 )
                 logger.info("✅ LLM successfully parsed response for $endpoint: ${result.parameters.size} parameters")
                 result
-            } catch (e: com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException) {
+            } catch (e: MismatchedInputException) {
                 logger.debug("LLM returned incomplete JSON for $endpoint, using safe fallback: ${e.message}")
                 // Only catch specific missing parameter exceptions to prevent retry loops
                 LlmParameterAnalysis(parameters = emptyList())
-            } catch (e: com.fasterxml.jackson.core.JsonParseException) {
+            } catch (e: StreamReadException) {
                 logger.debug("LLM returned invalid JSON for $endpoint, using safe fallback: ${e.message}")
                 // Only catch JSON parsing errors to prevent retry loops
                 LlmParameterAnalysis(parameters = emptyList())

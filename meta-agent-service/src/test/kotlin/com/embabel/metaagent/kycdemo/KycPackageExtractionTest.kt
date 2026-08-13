@@ -1,10 +1,9 @@
 package com.embabel.metaagent.kycdemo
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.json.JsonMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.readValue
+import tools.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
+import tools.jackson.module.kotlin.readValue
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
@@ -15,7 +14,6 @@ class KycPackageExtractionTest {
     private val logger = LoggerFactory.getLogger(KycPackageExtractionTest::class.java)
 
     private val objectMapper: ObjectMapper = JsonMapper.builder()
-        .addModule(JavaTimeModule())
         .addModule(KotlinModule.Builder().build())
         .build()
 

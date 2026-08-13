@@ -12,7 +12,7 @@
 
     <groupId>com.embabel.metaagent</groupId>
     <artifactId>meta-agent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Meta-Agent Framework</name>
@@ -38,10 +38,10 @@
         <kotlin.compiler.jvmTarget>21</kotlin.compiler.jvmTarget>
 
         <!-- Spring Boot -->
-        <spring-boot.version>3.5.12</spring-boot.version>
+        <spring-boot.version>4.1.0</spring-boot.version>
 
         <!-- Embabel Agent -->
-        <embabel-agent.version>1.0.0</embabel-agent.version>
+        <embabel-agent.version>1.5.0</embabel-agent.version>
 
         <!-- HTML Parsing -->
         <jsoup.version>1.21.2</jsoup.version>
@@ -53,6 +53,12 @@
         <junit.version>5.10.1</junit.version>
         <mockito.version>5.7.0</mockito.version>
         <assertj.version>3.27.7</assertj.version>
+
+        <!-- Jackson -->
+        <jackson.version>3.1.4</jackson.version>
+
+        <!-- Victools JSON Schema Generator (must match Jackson 3 / embabel-agent 1.5.0) -->
+        <victools.version>5.0.0</victools.version>
 
         <!-- LangChain4j -->
         <langchain4j.version>1.0.0-beta2</langchain4j.version>
@@ -117,6 +123,32 @@
                 <groupId>jakarta.validation</groupId>
                 <artifactId>jakarta.validation-api</artifactId>
                 <version>${jakarta.validation.version}</version>
+            </dependency>
+
+            <!-- Jackson 3 runtime (tools.jackson) -->
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- Victools JSON Schema Generator - pin to Jackson 3 build -->
+            <dependency>
+                <groupId>com.github.victools</groupId>
+                <artifactId>jsonschema-generator</artifactId>
+                <version>${victools.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.victools</groupId>
+                <artifactId>jsonschema-module-jackson</artifactId>
+                <version>${victools.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.victools</groupId>
+                <artifactId>jsonschema-module-swagger-2</artifactId>
+                <version>${victools.version}</version>
             </dependency>
 
             <!-- Testing -->
